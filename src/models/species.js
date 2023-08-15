@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
+
 export const Specie = sequelize.define('species', {
     id_specie: {
       autoIncrement: true,

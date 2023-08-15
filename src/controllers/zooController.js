@@ -1,13 +1,35 @@
 import { Zoo } from "../models/zoos.js"
 import { Op } from "sequelize";
+import { City } from "../models/cities.js"
+import { Country } from "../models/countries.js";
+import { Continent } from "../models/continents.js";
+import { Animal } from "../models/animals.js";
+import { Specie } from "../models/species.js";
 
 export const getAllZoo = async (req,res) =>{
   let response;
-  try{
-    response = await Zoo.findAll();
+  try{    
+      response = await Zoo.findAll({
+          include:[
+              {
+                  model:City,
+                  attributes: ['city_name'],
+                  include:{
+                      model: Country,
+                      attributes: ['country_name'],
+                      include:{
+                          model:Continent,
+                          attributes: ['continent_name'],
+                          include:{model:Animal}
+                      }
+                  }
+              },
+
+          ]
+      });
     res.status(200).json(response)
   }catch(e){
-    res.status(500).json({"Error": e.message})
+    res.status(500).json({"Error": e.stack  })
   }
 };
 
@@ -41,6 +63,29 @@ export const getZooBudget = async (req,res) =>{
     res.status(500).json({"Error": e.message})
     return;
   }
+}
+
+export const getRefuge = async (req, res) => {
+  let response;
+  try{    
+      response = await Refuge.findAll({
+          include:[
+              {model:Zoo},
+              {
+                  model:Specie,
+                  include:{
+                      model:Animal,
+                      include:{model:Continent}
+                  }
+              }
+          ]
+      });
+
+  }catch(e){
+      res.status(500).json({"Error": e.message});
+  }
+
+  res.status(200).json(response);
 }
 
 export const getZooNombre = async (req,res) =>{

@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
-export const Cities = sequelize.define('cities', {
+import { Country } from './countries.js'
+
+export const City = sequelize.define('cities', {
     id_city: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -34,3 +36,9 @@ export const Cities = sequelize.define('cities', {
       },
     ]
   });
+
+  City.hasOne(Country, {
+    foreinKey:'id_country'
+  })
+
+  

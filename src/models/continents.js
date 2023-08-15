@@ -1,7 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
+import { Animal } from './animals.js';
 
-export const Continents = sequelize.define('continents', {
+export const Continent = sequelize.define('continents', {
     id_continent: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -27,3 +28,13 @@ export const Continents = sequelize.define('continents', {
       },
     ]
   });
+  
+  Continent.hasMany(Animal,{
+    foreingKey: 'continent_id',
+    sourcerKey: 'id_continent'
+  });
+
+  Animal.belongsTo(Continent,{
+    foreingKey: 'continent_id',
+    sourceKey: 'id_continent'
+  })

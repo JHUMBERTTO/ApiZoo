@@ -1,9 +1,12 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database.js';
+import { Zoo } from "./zoos.js";
+import {Specie} from "./species.js"
 
 export const Refuge = sequelize.define('refuges', {
     id_refuge: {
-      autoIncrement: true,
+      primaryKey: true,
+      autoIncrement : true,
       type: DataTypes.INTEGER,
       allowNull: false
     },
@@ -27,5 +30,15 @@ export const Refuge = sequelize.define('refuges', {
     sequelize,
     tableName: 'refuges',
     schema: 'public',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "pk_refuge",
+        unique: true,
+        fields: [
+          { name: "id_refuge" },
+        ]
+      },
+    ]
   });
+  
